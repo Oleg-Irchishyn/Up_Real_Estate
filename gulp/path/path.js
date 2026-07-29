@@ -63,13 +63,13 @@ let path = {
     htmlWatch: 'dev/*.html',
   },
   prod: {
-    root: 'prod/',
-    style: 'prod/style',
-    js: 'prod/js',
-    img: 'prod/img',
-    sprite: 'prod/img/sprite',
-    vendor: 'prod/vendor',
-    fonts: 'prod/fonts',
+    root: 'web/',
+    style: 'web/style',
+    js: 'web/js',
+    img: 'web/img',
+    sprite: 'web/img/sprite',
+    vendor: 'web/vendor',
+    fonts: 'web/fonts',
   }
 };
 

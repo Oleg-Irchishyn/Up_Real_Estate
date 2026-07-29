@@ -9,9 +9,10 @@ const named = require('vinyl-named');
 const del = require('del');  // check if i need that
 const pngquant = require('imagemin-pngquant');
 const plugins = require('gulp-load-plugins')({ // this one requires all plugins with prefix 'gulp-'
-  pattern: ['gulp-*', 'gulp.*'],
+  pattern: ['gulp-*', 'gulp.*', '!gulp-sass'],
   replaceString: /\bgulp[\-.]/
 });
+const sass = require('gulp-sass')(require('sass')); // gulp-sass 5+ needs a compiler injected manually; dart-sass is pure JS, no native build required
 const autoprefixer = require('autoprefixer');
 const mqpacker = require('css-mqpacker');
 const csso = require('postcss-csso');
@@ -180,7 +181,7 @@ gulp.task('fonts', function () {
     else return path.prod.fonts
   };
   if (isDevEnv == false) {
-    del("prod/fonts/*.*", { read: false }); // clear all old fonts 
+    del("web/fonts/*.*", { read: false }); // clear all old fonts 
   }
   return gulp.src(path.src.fonts)
     .pipe(plugins.if(config.checkChanged && isDevEnv, plugins.changed(destination)))
@@ -316,11 +317,11 @@ gulp.task('style', function () {
     .pipe(plugins.if(config.cssSourcemap && isDevEnv, plugins.sourcemaps.init()))
     .pipe(plugins.if(
       isDevEnv,
-      plugins.sass({
+      sass({
         outputStyle: 'nested', // nested, expanded, compact, compressed
         precision: 5
       }),
-      plugins.sass({ outputStyle: 'compressed', precision: 5 })
+      sass({ outputStyle: 'compressed', precision: 5 })
     ))
     .pipe(plugins.postcss(processors))
     .pipe(plugins.if(config.cssSourcemap && isDevEnv, plugins.sourcemaps.write('./')))
